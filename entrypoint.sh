@@ -1,5 +1,11 @@
 #!/bin/bash
 
+configure_aws_credentials(){
+	aws configure set aws_access_key_id "${INPUT_AWS_ACCESS_KEY_ID}"
+  aws configure set aws_secret_access_key "${INPUT_AWS_SECRET_ACCESS_KEY}"
+  aws configure set default.region "${INPUT_LAMBDA_REGION}"
+}
+
 install_zip_dependencies(){
 	echo "Installing and zipping dependencies..."
 	mkdir python
@@ -27,6 +33,7 @@ update_function_layers(){
 }
 
 deploy_lambda_function(){
+  configure_aws_credentials
 	install_zip_dependencies
 	publish_dependencies_as_layer
 	publish_function_code
